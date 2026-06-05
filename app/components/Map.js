@@ -1,7 +1,10 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { MapContainer, TileLayer, CircleMarker } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
+useEffect(() => {
+  import('leaflet/dist/leaflet.css')
+  setMounted(true)
+}, [])
 
 export const events = [
   {
