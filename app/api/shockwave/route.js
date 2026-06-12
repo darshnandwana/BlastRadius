@@ -11,7 +11,7 @@ async function fetchRSSHeadlines() {
 
   for (const url of feeds) {
     try {
-      const res = await fetch(url)
+      const res = await fetch(url, { signal: AbortSignal.timeout(5000) })
       const text = await res.text()
       const titles = [...text.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>|<title>(.*?)<\/title>/g)]
         .slice(1, 6)
@@ -40,7 +40,7 @@ export async function GET() {
       messages: [
         {
           role: 'user',
-          content: `You are Blastradius, an economic shockwave analyzer. Given these real headlines from today, identify the 3 most significant geopolitical events and provide a blast radius analysis for each.
+          content: `You are Blastradius, an economic shockwave analyzer. Given these real headlines from today, identify the 10 most significant geopolitical events and provide a blast radius analysis for each.
 
 Headlines:
 ${headlines}
