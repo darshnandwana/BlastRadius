@@ -38,6 +38,10 @@ export default function Home() {
     { name: 'Gold', value: '$2,340', change: '+0.8%', up: true },
   ]
 
+  const handleEventSelect = (event) => {
+    setSelectedEvent(event)
+  }
+
   return (
     <main style={{ minHeight: '100vh', backgroundColor: '#0a0a0a', color: '#ffffff', fontFamily: 'sans-serif', overflow: 'hidden' }}>
 
@@ -77,13 +81,14 @@ export default function Home() {
             <div style={{ fontSize: '13px', color: '#888' }}>Analyzing geopolitical events...</div>
           ) : aiEvents.length > 0 ? (
             aiEvents.map((event, i) => (
-              <div key={i} onClick={() => setSelectedEvent(event)} style={{
-                background: selectedEvent === event ? '#1a1a1a' : 'transparent',
-                border: '1px solid #222',
+              <div key={i} onClick={() => handleEventSelect(event)} style={{
+                background: selectedEvent?.name === event.name ? '#1a1a1a' : 'transparent',
+                border: selectedEvent?.name === event.name ? '1px solid #E24B4A' : '1px solid #222',
                 borderRadius: '8px',
                 padding: '12px',
                 marginBottom: '10px',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                transition: 'all 0.2s'
               }}>
                 <div style={{ fontSize: '13px', fontWeight: '500', marginBottom: '4px' }}>{event.name}</div>
                 <div style={{ fontSize: '11px', color: '#888', marginBottom: '6px' }}>{event.location} · {event.date}</div>
@@ -102,15 +107,14 @@ export default function Home() {
 
         {/* Center — Globe */}
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ position: 'absolute', top: '16px', fontSize: '12px', color: '#888' }}>
+          <div style={{ position: 'absolute', top: '16px', fontSize: '12px', color: '#555', zIndex: 10 }}>
             Every geopolitical event sends a shockwave. Click any event to see the blast radius.
           </div>
           <div style={{ width: '100%', height: '100%' }}>
             <Globe
-  events={aiEvents.filter(e => e.lat && e.lng)}
-  onEventClick={setSelectedEvent}
-  selectedEvent={selectedEvent}
-/>
+              events={aiEvents.filter(e => e.lat && e.lng)}
+              onEventClick={handleEventSelect}
+            />
           </div>
         </div>
 
